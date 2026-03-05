@@ -14,7 +14,10 @@ import {
   X,
   Clapperboard,
   LayoutDashboard,
+  LogIn,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Discover", path: "/", icon: Home },
@@ -36,6 +39,7 @@ export default function CinemaLayout() {
   const [dark, setDark] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const toggleDark = () => {
     setDark(!dark);
@@ -81,6 +85,34 @@ export default function CinemaLayout() {
         </nav>
 
         <div className="p-4 border-t border-border/50">
+          {isAuthenticated && user ? (
+            <div className="mb-3 px-4 py-3 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                  <User className="w-4 h-4 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground truncate">{user.Name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.Email}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => logout()}
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-all w-full"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center gap-3 px-4 py-3 mb-3 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all"
+            >
+              <LogIn className="w-5 h-5" />
+              Login
+            </Link>
+          )}
           <button
             onClick={toggleDark}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-all w-full"
@@ -140,6 +172,38 @@ export default function CinemaLayout() {
                 ))}
               </nav>
               <div className="p-4 mt-auto border-t border-border/50">
+                {isAuthenticated && user ? (
+                  <div className="mb-3 px-4 py-3 rounded-lg bg-muted/50">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <User className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">{user.Name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user.Email}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setSidebarOpen(false);
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-all w-full"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setSidebarOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 mb-3 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition-all"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    Login
+                  </Link>
+                )}
                 <button
                   onClick={toggleDark}
                   className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted w-full"
@@ -163,9 +227,17 @@ export default function CinemaLayout() {
           <span className="text-lg font-extrabold text-foreground">
             Shof<span className="text-primary">TV</span>
           </span>
-          <button onClick={toggleDark} className="text-muted-foreground">
-            {dark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-2">
+            {isAuthenticated && user ? (
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                <User className="w-4 h-4 text-primary" />
+              </div>
+            ) : (
+              <Link to="/login" className="text-primary">
+                <LogIn className="w-5 h-5" />
+              </Link>
+            )}
+          </div>
         </header>
 
         {/* Page Content */}

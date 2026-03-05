@@ -1,5 +1,5 @@
-import { GENRES } from "@/data/movies";
-import { motion } from "framer-motion";
+import { useGenres } from "@/hooks/useMovies";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface GenreChipsProps {
   selected: string;
@@ -7,9 +7,24 @@ interface GenreChipsProps {
 }
 
 export default function GenreChips({ selected, onSelect }: GenreChipsProps) {
+  const { data: apiGenres, isLoading } = useGenres();
+
+  // Add "All" to the beginning of genres list
+  const genres = apiGenres ? ["All", ...apiGenres] : ["All"];
+
+  if (isLoading) {
+    return (
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1 px-1">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <Skeleton key={i} className="h-9 w-20 rounded-full shrink-0" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1 px-1">
-      {GENRES.map((genre) => (
+      {genres.map((genre) => (
         <button
           key={genre}
           onClick={() => onSelect(genre)}
