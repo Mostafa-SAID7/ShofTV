@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CinemaLayout from "@/components/layout/CinemaLayout";
 import DiscoveryHub from "@/pages/DiscoveryHub";
 import MovieDetail from "@/pages/MovieDetail";
+import AdminDashboard from "@/pages/AdminDashboard";
+import UserProfile from "@/pages/UserProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +23,8 @@ const App = () => (
             <Route path="/" element={<DiscoveryHub />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
             <Route path="/movies" element={<DiscoveryHub />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/profile" element={<UserProfile />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

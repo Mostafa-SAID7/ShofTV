@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   Clapperboard,
+  LayoutDashboard,
 } from "lucide-react";
 
 const navItems = [
@@ -20,6 +21,7 @@ const navItems = [
   { label: "Movies", path: "/movies", icon: Film },
   { label: "My Tickets", path: "/tickets", icon: Ticket },
   { label: "Profile", path: "/profile", icon: User },
+  { label: "Admin", path: "/admin", icon: LayoutDashboard },
   { label: "Support", path: "/support", icon: HelpCircle },
 ];
 
@@ -200,7 +202,7 @@ export default function CinemaLayout() {
       </div>
 
       {/* Chat Widget */}
-      <button className="fixed bottom-20 lg:bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg animate-pulse-neon hover:scale-110 transition-transform">
+      <button className="fixed bottom-40 lg:bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg animate-pulse-neon hover:scale-110 transition-transform">
         <MessageCircle className="w-6 h-6 text-primary-foreground" />
       </button>
     </div>
