@@ -3,11 +3,12 @@ import { Ticket, Calendar, Clock, MapPin, Star, AlertCircle } from "lucide-react
 import { useAuth } from "@/hooks/useAuth";
 import { useTicketsByUser } from "@/hooks/useTickets";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Tickets() {
   const { user, isAuthenticated } = useAuth();
   const { data: tickets, isLoading, error } = useTicketsByUser(user?.Id?.toString() || "");
+  const location = useLocation();
 
   // Not authenticated state
   if (!isAuthenticated) {
@@ -19,7 +20,8 @@ export default function Tickets() {
           Please log in to view your tickets and booking history.
         </p>
         <Link
-          to="/"
+          to="/login"
+          state={{ from: location }}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
           Go to Login

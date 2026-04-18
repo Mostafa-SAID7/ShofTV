@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Film } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Login() {
@@ -18,6 +18,10 @@ export default function Login() {
 
   const { login, register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the page user was trying to access before login
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +34,7 @@ export default function Login() {
         toast.success("Welcome back!", {
           description: "You have successfully logged in."
         });
-        navigate("/");
+        navigate(from, { replace: true });
       } else {
         // Register
         if (formData.password !== formData.confirmPassword) {
@@ -41,7 +45,7 @@ export default function Login() {
         toast.success("Account created!", {
           description: "Welcome to ShofTV. You can now book tickets."
         });
-        navigate("/");
+        navigate(from, { replace: true });
       }
     } catch (error: any) {
       toast.error(isLogin ? "Login failed" : "Registration failed", {
