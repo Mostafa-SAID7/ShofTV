@@ -17,7 +17,7 @@ export interface Movie {
 }
 
 // Mock movies data for development
-export const movies: Movie[] = [
+const movies: Movie[] = [
   {
     id: "1",
     title: "Neon Dreams",
@@ -187,3 +187,7 @@ export const movies: Movie[] = [
     ]
   }
 ];
+
+// Export the movies array
+export { movies };
+export default movies;
