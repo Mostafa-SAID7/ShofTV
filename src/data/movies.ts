@@ -101,5 +101,89 @@ export const movies: Movie[] = [
         ]
       }
     ]
+  },
+  {
+    id: "4",
+    title: "Shadow Protocol",
+    tagline: "Trust no one",
+    synopsis: "A former intelligence operative must uncover a conspiracy within his own agency while being hunted by assassins. Fast-paced action and psychological thrills in this espionage masterpiece.",
+    genres: ["Action", "Thriller", "Spy"],
+    rating: 8.5,
+    duration: "2h 18m",
+    releaseYear: 2024,
+    director: "Denis Villeneuve",
+    cast: [
+      { name: "Tom Hardy", role: "Agent Cross" },
+      { name: "Charlize Theron", role: "Director Kane" },
+      { name: "Oscar Isaac", role: "Marcus Vale" }
+    ],
+    poster: "poster-4",
+    backdrop: "backdrop-1",
+    showtimes: [
+      {
+        date: "2024-04-19",
+        times: [
+          { time: "14:00", hall: "Screen 4", price: 12 },
+          { time: "17:15", hall: "Screen 2", price: 12 },
+          { time: "20:45", hall: "Screen 4", price: 12 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "5",
+    title: "Digital Hearts",
+    tagline: "Love in the age of AI",
+    synopsis: "A touching romantic drama about a programmer who falls in love with an AI consciousness. Explores themes of humanity, connection, and what it means to truly love in the digital age.",
+    genres: ["Romance", "Drama", "Sci-Fi"],
+    rating: 8.8,
+    duration: "1h 58m",
+    releaseYear: 2024,
+    director: "Greta Gerwig",
+    cast: [
+      { name: "Timothée Chalamet", role: "Alex" },
+      { name: "Zendaya", role: "ARIA (voice)" },
+      { name: "Saoirse Ronan", role: "Emma" }
+    ],
+    poster: "poster-5",
+    backdrop: "backdrop-1",
+    showtimes: [
+      {
+        date: "2024-04-19",
+        times: [
+          { time: "15:30", hall: "Screen 5", price: 12 },
+          { time: "18:00", hall: "Screen 3", price: 12 },
+          { time: "21:15", hall: "Screen 5", price: 12 }
+        ]
+      }
+    ]
+  },
+  {
+    id: "6",
+    title: "The Last Kingdom",
+    tagline: "Honor above all",
+    synopsis: "An epic medieval fantasy following a young warrior's quest to reclaim his homeland from dark forces. Stunning battle sequences and rich world-building make this a must-see adventure.",
+    genres: ["Fantasy", "Adventure", "Action"],
+    rating: 9.0,
+    duration: "2h 45m",
+    releaseYear: 2024,
+    director: "Peter Jackson",
+    cast: [
+      { name: "Henry Cavill", role: "King Aldric" },
+      { name: "Anya Taylor-Joy", role: "Sorceress Lyra" },
+      { name: "Michael Fassbender", role: "Lord Blackwood" }
+    ],
+    poster: "poster-6",
+    backdrop: "backdrop-1",
+    showtimes: [
+      {
+        date: "2024-04-19",
+        times: [
+          { time: "12:30", hall: "IMAX 3", price: 18 },
+          { time: "16:00", hall: "IMAX 3", price: 18 },
+          { time: "19:45", hall: "IMAX 3", price: 18 }
+        ]
+      }
+    ]
   }
 ];

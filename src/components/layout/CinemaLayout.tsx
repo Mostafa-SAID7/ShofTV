@@ -23,7 +23,6 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Discover", path: "/", icon: Home },
-  { label: "Movies", path: "/movies", icon: Film },
   { label: "My Tickets", path: "/tickets", icon: Ticket },
   { label: "Profile", path: "/profile", icon: User },
   { label: "Admin", path: "/admin", icon: LayoutDashboard },
@@ -32,9 +31,9 @@ const navItems = [
 
 const mobileNav = [
   { label: "Home", path: "/", icon: Home },
-  { label: "Movies", path: "/movies", icon: Film },
   { label: "Tickets", path: "/tickets", icon: Ticket },
   { label: "Profile", path: "/profile", icon: User },
+  { label: "Support", path: "/support", icon: HelpCircle },
 ];
 
 export default function CinemaLayout() {
