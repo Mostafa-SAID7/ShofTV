@@ -32,6 +32,17 @@ export function useScreening(id: string) {
 }
 
 /**
+ * Get screenings for a specific movie
+ */
+export function useScreeningsForMovie(movieId: string) {
+  return useQuery({
+    queryKey: ['screenings', 'movie', movieId],
+    queryFn: () => screeningsService.getScreeningsForMovie(movieId),
+    enabled: !!movieId,
+  });
+}
+
+/**
  * Get reserved seats for a screening
  */
 export function useReservedSeats(screeningId: string) {
