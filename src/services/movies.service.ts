@@ -8,30 +8,55 @@
 import apiClient from '@/lib/api-client';
 import { mapBackendMovieToFrontend, mapFrontendMovieToBackend } from '@/lib/mappers';
 import { BackendMovie, CreateAndUpdateMovie, CreateRating } from '@/types/api';
-import { Movie } from '@/data/movies';
+import { Movie, movies } from '@/data/movies';
 
 /**
  * Get all movies
  */
 export async function getMovies(): Promise<Movie[]> {
-  const response = await apiClient.get<BackendMovie[]>('/api/movies');
-  return response.data.map(mapBackendMovieToFrontend);
+  try {
+    const response = await apiClient.get<BackendMovie[]>('/api/movies');
+    return response.data.map(mapBackendMovieToFrontend);
+  } catch (error) {
+    // Fallback to mock data for development
+    console.warn('API not available, using mock data:', error);
+    return Promise.resolve(movies);
+  }
 }
 
 /**
  * Get movie by ID
  */
 export async function getMovieById(id: string): Promise<Movie> {
-  const response = await apiClient.get<BackendMovie>(`/api/movies/${id}`);
-  return mapBackendMovieToFrontend(response.data);
+  try {
+    const response = await apiClient.get<BackendMovie>(`/api/movies/${id}`);
+    return mapBackendMovieToFrontend(response.data);
+  } catch (error) {
+    // Fallback to mock data for development
+    console.warn('API not available, using mock data:', error);
+    const movie = movies.find(m => m.id === id);
+    if (!movie) {
+      throw new Error(`Movie with id ${id} not found`);
+    }
+    return Promise.resolve(movie);
+  }
 }
 
 /**
  * Get movies by genre
  */
 export async function getMoviesByGenre(genre: string): Promise<Movie[]> {
-  const response = await apiClient.get<BackendMovie[]>(`/api/movies/genre/${genre}`);
-  return response.data.map(mapBackendMovieToFrontend);
+  try {
+    const response = await apiClient.get<BackendMovie[]>(`/api/movies/genre/${genre}`);
+    return response.data.map(mapBackendMovieToFrontend);
+  } catch (error) {
+    // Fallback to mock data for development
+    console.warn('API not available, using mock data:', error);
+    const filteredMovies = movies.filter(movie => 
+      movie.genres.some(g => g.toLowerCase() === genre.toLowerCase())
+    );
+    return Promise.resolve(filteredMovies);
+  }
 }
 
 /**
@@ -86,8 +111,18 @@ export async function getTopRatedMovies(n: number): Promise<Movie[]> {
  * Get all genres
  */
 export async function getAllGenres(): Promise<string[]> {
-  const response = await apiClient.get<string[]>('/api/movies/genres');
-  return response.data;
+  try {
+    const response = await apiClient.get<string[]>('/api/movies/genres');
+    return response.data;
+  } catch (error) {
+    // Fallback to mock data for development
+    console.warn('API not available, using mock data:', error);
+    const allGenres = new Set<string>();
+    movies.forEach(movie => {
+      movie.genres.forEach(genre => allGenres.add(genre));
+    });
+    return Promise.resolve(Array.from(allGenres));
+  }
 }
 
 /**

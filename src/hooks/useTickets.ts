@@ -27,7 +27,7 @@ export function useTickets() {
 /**
  * Get tickets for a specific user
  */
-export function useUserTickets(userId: string) {
+export function useTicketsByUser(userId: string) {
   return useQuery({
     queryKey: ['tickets', 'user', userId],
     queryFn: () => ticketsService.getTicketsByUser(userId),
@@ -39,3 +39,8 @@ export function useUserTickets(userId: string) {
     },
   });
 }
+
+/**
+ * Alias for useTicketsByUser for backward compatibility
+ */
+export const useUserTickets = useTicketsByUser;
