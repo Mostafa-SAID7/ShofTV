@@ -16,6 +16,8 @@ import {
   LayoutDashboard,
   LogIn,
   LogOut,
+  Send,
+  Bot,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -38,6 +40,16 @@ const mobileNav = [
 export default function CinemaLayout() {
   const [dark, setDark] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatMessages, setChatMessages] = useState([
+    {
+      id: 1,
+      text: "Hi! I'm your ShofTV assistant. How can I help you today?",
+      isBot: true,
+      timestamp: new Date()
+    }
+  ]);
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -53,6 +65,48 @@ export default function CinemaLayout() {
 
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
+  const handleSendMessage = () => {
+    if (!chatMessage.trim()) return;
+
+    // Add user message
+    const userMessage = {
+      id: Date.now(),
+      text: chatMessage,
+      isBot: false,
+      timestamp: new Date()
+    };
+
+    setChatMessages(prev => [...prev, userMessage]);
+    setChatMessage("");
+
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponse = {
+        id: Date.now() + 1,
+        text: getBotResponse(chatMessage),
+        isBot: true,
+        timestamp: new Date()
+      };
+      setChatMessages(prev => [...prev, botResponse]);
+    }, 1000);
+  };
+
+  const getBotResponse = (message: string) => {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes("ticket") || lowerMessage.includes("book")) {
+      return "You can book tickets by browsing our movies and selecting your preferred showtime. Need help finding a specific movie?";
+    } else if (lowerMessage.includes("cancel") || lowerMessage.includes("refund")) {
+      return "You can cancel tickets up to 2 hours before showtime. Visit your profile to manage your bookings.";
+    } else if (lowerMessage.includes("payment") || lowerMessage.includes("pay")) {
+      return "We accept all major credit cards, PayPal, Apple Pay, and Google Pay. All payments are secure and encrypted.";
+    } else if (lowerMessage.includes("help") || lowerMessage.includes("support")) {
+      return "I'm here to help! You can also visit our Support page for detailed FAQs and contact options.";
+    } else {
+      return "Thanks for your message! For detailed assistance, please visit our Support page or contact our team directly.";
+    }
+  };
 
   return (
     <div className="min-h-screen flex bg-background">
@@ -274,9 +328,93 @@ export default function CinemaLayout() {
       </div>
 
       {/* Chat Widget */}
-      <button className="fixed bottom-40 lg:bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg animate-pulse-neon hover:scale-110 transition-transform">
+      <button 
+        onClick={() => setChatOpen(true)}
+        className="fixed bottom-40 lg:bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg animate-pulse-neon hover:scale-110 transition-transform"
+      >
         <MessageCircle className="w-6 h-6 text-primary-foreground" />
       </button>
+
+      {/* Chat Modal */}
+      <AnimatePresence>
+        {chatOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+              onClick={() => setChatOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="fixed bottom-4 right-4 w-80 h-96 bg-sidebar border border-border/50 rounded-xl shadow-2xl z-50 flex flex-col glass-card"
+            >
+              {/* Chat Header */}
+              <div className="flex items-center justify-between p-4 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Bot className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">ShofTV Support</h3>
+                    <p className="text-xs text-muted-foreground">Online now</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setChatOpen(false)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Chat Messages */}
+              <div className="flex-1 p-4 overflow-y-auto space-y-3">
+                {chatMessages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg text-sm ${
+                        message.isBot
+                          ? 'bg-muted text-foreground'
+                          : 'bg-primary text-primary-foreground'
+                      }`}
+                    >
+                      {message.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Chat Input */}
+              <div className="p-4 border-t border-border/50">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Type your message..."
+                    className="flex-1 px-3 py-2 rounded-lg bg-secondary border border-border/30 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+                  />
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={!chatMessage.trim()}
+                    className="px-3 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

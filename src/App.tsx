@@ -11,6 +11,8 @@ import AdminDashboard from "@/pages/AdminDashboard";
 import UserProfile from "@/pages/UserProfile";
 import NotFound from "./pages/NotFound";
 import Tickets from "./pages/Tickets";
+import Support from "./pages/Support";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -27,9 +29,11 @@ const App = () => (
               <Route path="/movie/:id" element={<MovieDetail />} />
               <Route path="/movies" element={<DiscoveryHub />} />
               <Route path="/tickets" element={<Tickets />} />
+              <Route path="/support" element={<Support />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/profile" element={<UserProfile />} />
             </Route>
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
