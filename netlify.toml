@@ -1,15 +1,20 @@
+# Netlify configuration for React/Vite project
 [build]
-  command = "npm run build"
+  command = "npm ci && npm run build"
   publish = "dist"
-
+  
 [build.environment]
   NODE_VERSION = "22.14.0"
+  # Explicitly set framework to prevent auto-detection issues
+  NETLIFY_FRAMEWORK = "vite"
 
+# SPA redirect for React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Production environment variables
 [context.production.environment]
   VITE_API_BASE_URL = "https://localhost:7200"
   VITE_API_TIMEOUT = "10000"
